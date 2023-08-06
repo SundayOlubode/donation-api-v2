@@ -130,7 +130,7 @@ Donation API
             "passwordToken": null
         },
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ3NmZiMjRiMTA4YzlmNjYzZmQ4ZTNmIiwiaWF0IjoxNjg1NTM5MjEwLCJleHAiOjE2OTMzMTUyMTB9.BhhP-cj4al2wMQNwYzNtvha8KcmAXbBjMWCvMeSpFDk",
-        "pendingDonations": []
+        "pendingDonations": donation[]
     }
 }
 ```
@@ -138,7 +138,7 @@ Donation API
 ### Notify Admin
 - Route: api/v2/user/notify
 - Method: POST
-- Authorization: Bearer Token
+- Authorization: Bearer Token || Cookie
 - Body: 
 ```
 {
@@ -151,13 +151,13 @@ Donation API
 ```
 {
     "status": "success",
-    "message": "Admin will be notified, and you will receive a response soon"
+    "message": "Admin will be notified, and you will receive a response shortly"
 }
 ```
 ### Get All Donations
 - Route: api/v2/user/donations
 - Method: GET
-- Authorization: Bearer Token
+- Authorization: Bearer Token || Cookie
 - Response:
 ```
 {
@@ -179,7 +179,7 @@ Donation API
 ### Get My Donations
 - Route: api/v2/user/me/donations
 - Method: GET
-- Authorization: Bearer Token
+- Authorization: Bearer Token || Cookie
 - Response:
 ```
 {
@@ -193,7 +193,7 @@ Donation API
 ### Verify Donations
 - Route: api/v2/user/donations/verify/:donation-id
 - Method: PATCH
-- Authorization: Bearer Token
+- Authorization: Bearer Token || Cookie
 - Response:
 ```
 {
@@ -204,7 +204,7 @@ Donation API
 ### Reject Donations
 - Route: api/v2/user/donations/decline/:donation-id
 - Method: POST
-- Authorization: Bearer Token
+- Authorization: Bearer Token || Cookie
 - Body:
 ```
   {
@@ -223,7 +223,7 @@ Donation API
 ### Get Donations Breakdown
 - Route: api/v2/donations/breakdown
 - Method: GET
-- Authorization: Bearer Token
+- Authorization: Bearer Token || Cookie
 
 - Response:
 
@@ -244,7 +244,7 @@ Donation API
 ### Disburse
 - Route: api/v2/donations/breakdown/disburse
 - Method: PATCH
-- Authorization: Bearer Token
+- Authorization: Bearer Token || Cookie
 - Body:
 ```
 {
