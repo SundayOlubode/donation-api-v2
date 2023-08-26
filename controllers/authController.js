@@ -11,7 +11,7 @@ const crypto = require('crypto')
  */
 exports.signup = async (req, res, next) => {
 
-    const { email, password, confirmPassword, firstname, lastname } = req.body
+    const { email, password, confirmPassword, firstname, lastname, role } = req.body
 
     try {
 

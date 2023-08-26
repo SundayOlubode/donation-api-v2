@@ -8,12 +8,6 @@ const donationSchema = new Schema({
         default: Date.now
     },
     donor_id: { type: mongoose.Types.ObjectId, ref: 'user' },
-    verified: {
-        type: String,
-        default: 'pending',
-        enum: ['pending', 'verified', 'declined']
-    }
-
 })
 
 const donationModel = mongoose.model('donation', donationSchema)

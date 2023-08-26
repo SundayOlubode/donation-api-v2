@@ -1,4 +1,3 @@
-// middleware for admin routes
 const express = require('express')
 const router = express.Router()
 const restrictTo = require('./../middlewares/restrictTo')
@@ -8,9 +7,9 @@ const {
     getBreakdown, postDisbursed,
 } = require('./../controllers/breakdownController')
 
-router.use([authorize, restrictTo('admin')])
+router.get('/', authorize, getBreakdown)
 
-router.get('/', getBreakdown)
+router.use([authorize, restrictTo('admin')])
 
 router.patch('/disburse', postDisbursed)
 

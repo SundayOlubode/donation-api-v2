@@ -2,20 +2,18 @@
 Donation API
 
 ## Stack
-*Language : Javascript(nodejs)*
-*Framework : Expressjs*
-*Database: MongoDB, Mongoose*
+- *Language : Javascript(nodejs)*
+- *Framework : Expressjs*
+- *Database: MongoDB, Mongoose*
 
 ## Features
+#### Auth
 - Signup (JWT in cookie)
 - Login (JWT in cookie)
 
-### Users
-- Notify Admin
+#### Users
 - See Own Donations
 - Get All donations
-- Verify Donations
-- Reject Donations with note
 - Disburse Donations
 - Get Breakdown
 - Get Own Donations
@@ -49,8 +47,7 @@ Donation API
             "_id": "6476fb24b108c9f663fd8e3f",
             "__v": 0
         },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ3NmZiMjRiMTA4YzlmNjYzZmQ4ZTNmIiwiaWF0IjoxNjg1NTE5MTQxLCJleHAiOjE2OTMyOTUxNDF9.sFnfo9UNHO_ycxwGbfwz-ZmktwijhxKR8vdGc4I5cso",
-        "pendingDonations": [] || undefined (if not admin)
+        "token": "jwt",
     }
 }
 ```
@@ -79,9 +76,7 @@ Donation API
             "role": "admin",
             "__v": 0
         },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ3NmZiMjRiMTA4YzlmNjYzZmQ4ZTNmIiwiaWF0IjoxNjg1NTMxMzE5LCJleHAiOjE2OTMzMDczMTl9.-v59eYhbwUVwYFnxApqs1fO2CKCupL29z5XGtKMHuto",
-
-        "pendingDonations": [] || undefined (if not admin)
+        "token": "jwt",
     }
 }
 ```
@@ -129,35 +124,17 @@ Donation API
             "passwordResetExpiry": null,
             "passwordToken": null
         },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ3NmZiMjRiMTA4YzlmNjYzZmQ4ZTNmIiwiaWF0IjoxNjg1NTM5MjEwLCJleHAiOjE2OTMzMTUyMTB9.BhhP-cj4al2wMQNwYzNtvha8KcmAXbBjMWCvMeSpFDk",
-        "pendingDonations": donation[]
+        "token": jwt,
     }
 }
 ```
 ## User Routes
-### Notify Admin
-- Route: api/v2/user/notify
-- Method: POST
-- Authorization: Bearer Token || Cookie
-- Body: 
-```
-{
-    "amount": 5000,
-    "date": "2023-06-08"
-}
-```
-
-- Response:
-```
-{
-    "status": "success",
-    "message": "Admin will be notified, and you will receive a response shortly"
-}
 ```
 ### Get All Donations
-- Route: api/v2/user/donations
+- Route: api/v2/donations
 - Method: GET
 - Authorization: Bearer Token || Cookie
+```
 - Response:
 ```
 {
@@ -169,7 +146,6 @@ Donation API
                 "amount": 5000,
                 "date": "2023-06-08T00:00:00.000Z",
                 "donor_id": "6476fb24b108c9f663fd8e3f",
-                "verified": "pending",
                 "__v": 0
             }
         ]
@@ -177,56 +153,28 @@ Donation API
 }
 ```
 ### Get My Donations
+```
 - Route: api/v2/user/me/donations
 - Method: GET
 - Authorization: Bearer Token || Cookie
+```
 - Response:
 ```
 {
     "status": "success",
-    "message": "User donations gotten successfully!",
     "data": {
         "donations": []
     }
 }
 ```
-### Verify Donations
-- Route: api/v2/user/donations/verify/:donation-id
-- Method: PATCH
-- Authorization: Bearer Token || Cookie
-- Response:
-```
-{
-    "status": "success",
-    "message": "Donation verification successful!"
-}
-```
-### Reject Donations
-- Route: api/v2/user/donations/decline/:donation-id
-- Method: POST
-- Authorization: Bearer Token || Cookie
-- Body:
-```
-  {
-    "note": "Please correct the amount you specified in your donation"
-    }
-```
-
-- Response:
-
-```
-{
-    "status": "success",
-    "message": "Donation declined with note"
-}
-```
 ### Get Donations Breakdown
+```
 - Route: api/v2/donations/breakdown
 - Method: GET
 - Authorization: Bearer Token || Cookie
 
+```
 - Response:
-
 ```
 {
     "status": "success",
@@ -258,3 +206,5 @@ Donation API
     "message": "Disbursement updated successfully!"
 }
 ```
+
+- Olubode Sunday Samuel

@@ -33,7 +33,6 @@ const userSchema = new Schema({
     googleId: {
         type: String
     },
-    note: String,
     passwordToken: String,
     passwordResetExpiry: Date,
 })

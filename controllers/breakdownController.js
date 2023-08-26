@@ -16,7 +16,6 @@ exports.getBreakdown = async (req, res, next) => {
             breakdown = JSON.parse(breakdown)
             return res.status(200).json({
                 status: 'success',
-                message: 'Donation Breakdown',
                 data: {
                     breakdown
                 }
@@ -71,7 +70,4 @@ exports.postDisbursed = async (req, res, next) => {
         return next(new appError(error.message, error.statusCode))
     }
 }
-
-
-
 
