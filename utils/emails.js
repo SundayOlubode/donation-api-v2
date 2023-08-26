@@ -13,11 +13,12 @@ const mg = mailGun(mailgunAuth)
  * Send Email To Users
  */
 class EmailToUsers {
-    constructor(user, url) {
+    constructor(user, url, donation=undefined) {
         this.to = user.email;
         this.firstname = user.firstname
         this.url = url
         this.from = `${process.env.EMAIL_SENDER} ${process.env.EMAIL_FROM}`;
+        this.amount = donation.amount
     }
 
     async send(template, subject) {
@@ -30,13 +31,14 @@ class EmailToUsers {
             'h:X-Mailgun-Variables': JSON.stringify({
                 firstname: this.firstname,
                 url: this.url,
+                amount: this.amount
             })
         }
 
         try {
-            if (process.env.NODE_ENV === 'production') {
+            // if (process.env.NODE_ENV === 'production') {
                 await mg.messages().send(data)
-            }
+            // }
         } catch (error) {
             throw new appError(error.message, 500)
         }
@@ -56,6 +58,10 @@ class EmailToUsers {
     // SEND SUCCESFUL PASSWORD RESET MAIL
     async sendVerifiedPSWD() {
         await this.send('verified-pswd', 'You have reset your password successfully!')
+    }
+
+    async notifyDonor() {
+      await this.send('notify-donor', 'Your donation has been recorded!')
     }
 }
 

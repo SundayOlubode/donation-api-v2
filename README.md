@@ -1,5 +1,4 @@
-# donation-api-v2
-Donation API
+# Donation API
 
 ## Stack
 - *Language : Javascript(nodejs)*
@@ -187,6 +186,28 @@ Donation API
             "balance": 50000
         }
     }
+}
+```
+
+### Add Donations
+```
+- Route: api/v2/user/donations/add
+- Method: POST
+- Authorization: Bearer Token || Cookie
+```
+- Body:
+```
+{
+    "amount": 80000,
+    "userId": "6a5b811f6a0929e04250",
+    "date": (optional)
+}
+```
+- Response:
+```
+{
+    "status": "success",
+    "message": "You will receive a mail soon"
 }
 ```
 ### Disburse

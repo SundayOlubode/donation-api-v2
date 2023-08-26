@@ -2,6 +2,8 @@ const Donations = require('../models/donationModel')
 const appError = require('../utils/appError')
 const Cache = require('../configs/redis')
 const logger = require('../utils/logger')
+const { EmailToUsers } = require('../utils/emails')
+const Users = require('../models/userModel')
 
 /** 
  * GET MY DONATIONS
@@ -69,11 +71,44 @@ exports.getAllDonations = async (req, res, next) => {
 }
 
 /**
+ * NOTIFY ADMIN
+ */
+exports.addDonation = async (req, res, next) => {
+
+    const { amount, date, userId } = req.body
+
+    try {
+
+        const user = await Users.findById(userId)
+
+        if(!user){
+          throw new appError('User not found!', 500)
+        }
+
+        const donation = await Donations.create({
+            amount, date, donor_id: userId
+        })
+
+        const url = 'frontend url' //TODO: ADD FE USER PROFILE URL
+
+        await new EmailToUsers(user, url, donation).notifyDonor()
+
+        return res.status(200).json({
+            status: 'success',
+            message: 'You will receive a mail soon'
+        })
+
+    } catch (error) {
+        return next(new appError(error.message, error.statusCode))
+    }
+}
+
+/**
  * RETURN DATA IN CACHE
  */
 const returnDataInCache = async (donations, res) => {
     try {
-      
+
         return res.status(200).json({
             status: 'success',
             data: {
