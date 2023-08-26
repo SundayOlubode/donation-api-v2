@@ -36,9 +36,9 @@ class EmailToUsers {
         }
 
         try {
-            // if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'production') {
                 await mg.messages().send(data)
-            // }
+            }
         } catch (error) {
             throw new appError(error.message, 500)
         }
