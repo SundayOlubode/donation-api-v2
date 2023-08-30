@@ -1,6 +1,12 @@
 const Donations = require('../models/donationModel')
+const Users = require('../models/userModel')
 
-//CREATE FUNCTION THAT HANDLES TOKEN RESPONSE & COOKIE RESPONSE
+/**
+ * HANDLE TOKEN & COOKIE RESPONSE
+ * @param {*} user 
+ * @param {*} statusCode 
+ * @param {*} res 
+ */
 exports.createSendToken = async (user, statusCode, res) => {
     // CREATE JWT WITH MODEL INSTANCE
     const token = await user.createJWT();
@@ -19,16 +25,6 @@ exports.createSendToken = async (user, statusCode, res) => {
     const data = {
         user,
         token,
-    }
-
-    // if admin, add pending verification to res data
-    if ((user.role === 'admin')) {
-
-        const pending = await Donations.find({
-            verified: 'pending'
-        })
-
-        data.pendingDonations = pending
     }
 
     res.status(statusCode).json({

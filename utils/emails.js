@@ -18,7 +18,7 @@ class EmailToUsers {
         this.firstname = user.firstname
         this.url = url
         this.from = `${process.env.EMAIL_SENDER} ${process.env.EMAIL_FROM}`;
-        this.amount = donation.amount
+        this.amount = donation ? donation.amount : undefined
     }
 
     async send(template, subject) {
@@ -45,21 +45,30 @@ class EmailToUsers {
 
     }
 
-    // SEND WELCOME MAIL
+    /**
+     * SEND WELCOME MAIL
+     */
     async sendWelcome() {
         await this.send("test-welcome", "Welcome! Luke 6:38");
     }
 
-    // SEND PASSWORD RESET LINK
+    /**
+     * SEND PASSWORD RESET LINK
+     */
     async sendPasswordReset() {
         await this.send("reset-password", "Your password reset link(valid for only 10 minutes)");
     }
 
-    // SEND SUCCESFUL PASSWORD RESET MAIL
+    /**
+     * SEND SUCCESFUL PASSWORD RESET MAIL
+     */
     async sendVerifiedPSWD() {
         await this.send('verified-pswd', 'You have reset your password successfully!')
     }
 
+    /**
+     * NOTIFY DONOR WHEN ADMIN RECORDS DONATION
+     */
     async notifyDonor() {
       await this.send('notify-donor', 'Your donation has been recorded!')
     }
