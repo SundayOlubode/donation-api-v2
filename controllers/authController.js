@@ -163,14 +163,19 @@ exports.socialAuth = async (req, res, next) => {
         await res.cookie("jwt", token, cookieOptions);
 
         // SEND WELCOME MAIL
-        if(!oldUser){ //IF USER NOT OLD USER
+        if(user){ //IF NEW USER
             let url = process.env.WELCOMEURL
             await new EmailToUsers(user, url).sendWelcome()
         }
 
+        const data = {
+            user, oldUser,
+            token,
+        }
+
         return res.status(200).json({
             status: 'success',
-            user, oldUser
+            data
         })
     } catch (error) {
       return next(new appError(error.message, error.statusCode))      
