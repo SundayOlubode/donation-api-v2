@@ -23,8 +23,8 @@ require('./models/db').init()
 app.use(
   cors({
       credentials: true,
-      origin: "*",
-      preflightContinue: true
+      origin: ["https://special-potato-44r79pp54x7255r7-5173.app.github.dev"],
+      // preflightContinue: true
   })
 );
 
