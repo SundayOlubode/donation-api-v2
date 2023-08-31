@@ -146,30 +146,33 @@ exports.resetPassword = async (req, res, next) => {
 }
 
 exports.socialAuth = async (req, res, next) => {
+    try {
+          
+        // OBTAIN USER DETAILS FROM SESSION
+        const {
+            user: { user, token, oldUser }
+        } = req.session.passport;
 
-    // OBTAIN USER DETAILS FROM SESSION
-    const {
-        user: { user, token, oldUser }
-    } = req.session.passport;
+        const cookieOptions = {
+            expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+            httpOnly: true,
+        };
+        if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-    const cookieOptions = {
-        expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
-        httpOnly: true,
-    };
-    if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+        // Send token to client
+        await res.cookie("jwt", token, cookieOptions);
 
-    // Send token to client
-    await res.cookie("jwt", token, cookieOptions);
+        // SEND WELCOME MAIL
+        if(!oldUser){ //IF USER NOT OLD USER
+            let url = process.env.WELCOMEURL
+            await new EmailToUsers(user, url).sendWelcome()
+        }
 
-    // SEND WELCOME MAIL
-    if(!user.oldUser){ //IF USER NOT OLD USER
-        let url = process.env.WELCOMEURL
-        await new EmailToUsers(user, url).sendWelcome()
+        return res.status(200).json({
+            status: 'success',
+            user, oldUser
+        })
+    } catch (error) {
+      return next(new appError(error.message, error.statusCode))      
     }
-    
-
-    return res.status(200).json({
-        status: 'success',
-        user, oldUser
-    })
 }
