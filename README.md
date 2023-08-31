@@ -36,7 +36,7 @@
 - Response:
 ```
 {
-    "status": "Success",
+    "status": "success",
     "data": {
         "user": {
             "email": "testing@gmail.com",
@@ -65,7 +65,7 @@
 - Response:
 ```
 {
-    "status": "Success",
+    "status": "success",
     "data": {
         "user": {
             "_id": "6476fb24b108c9f663fd8e3f",
@@ -111,7 +111,7 @@
 - Response:
 ```
 {
-    "status": "Success",
+    "status": "success",
     "data": {
         "user": {
             "_id": "6476fb24b108c9f663fd8e3f",
