@@ -19,6 +19,15 @@ const appError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
 require('./models/db').init()
 
+// USE CORS
+app.use(
+  cors({
+      credentials: true,
+      origin: "*",
+      preflightContinue: true
+  })
+);
+
 // USE SESSION
 app.use(
     session({
@@ -31,14 +40,6 @@ app.use(
         })
     })
 )
-
-app.use(
-    cors({
-        credentials: true,
-        origin: "*",
-        preflightContinue: true
-    })
-);
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
