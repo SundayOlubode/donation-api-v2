@@ -18,7 +18,8 @@ exports.getAllUsers = async (req, res, next) => {
       })
     }
 
-    users = await Users.find()
+    users = await Users.find().select('firstname lastname');
+
     await Cache.set('allUsers', JSON.stringify(users))
 
     return res.status(200).json({

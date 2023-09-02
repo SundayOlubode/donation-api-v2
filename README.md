@@ -166,32 +166,18 @@
         "donors": [
             {
                 "_id": "64efd308d03b2b4c32aa2ac0",
-                "email": "email@gmail.com",
-                "password": "$2b$10$9e1/VCrEEuDCjvbnMKnxhulDL5MU4vgz0mz2bHEmHAg3Hde5G/7Fu",
                 "firstname": "Sam",
-                "lastname": "Olu",
-                "role": "donor",
-                "__v": 0,
-                "passwordResetExpiry": null,
-                "passwordToken": null
+                "lastname": "Olu"
             },
             {
                 "_id": "64f1136f54fec7608874ccb6",
-                "email": "email@gmail.com",
                 "firstname": "Sunday",
-                "lastname": "Olubode",
-                "role": "donor",
-                "googleId": "11407166",
-                "__v": 0
+                "lastname": "Olubode"
             },
             {
                 "_id": "64f3b2790757e63ed7ef0a45",
-                "email": "testing@gmail.com",
-                "password": "$2b$10$VUvdXc86vpFIjSt7jMkXSOjHcrdMwJpFJ7oBqtZ2OhJ7xgEsoZ4.e",
                 "firstname": "testing",
-                "lastname": "surname",
-                "role": "admin",
-                "__v": 0
+                "lastname": "surname"
             }
         ]
     }
