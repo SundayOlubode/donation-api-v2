@@ -75,6 +75,9 @@ exports.forgotPassword = async (req, res, next) => {
     const user = await Users.findOne({ email });
     if (!user) throw new appError("User not found!", 401);
 
+    // IF USER IS OAUTH USER
+    if (!user.password) throw new appError("Kindly sign in with Google!", 401);
+
     const { resetToken, passwordToken, passwordResetExpiry } = createPasswdResetToken()
 
     user.passwordToken = passwordToken;

@@ -149,8 +149,9 @@
 
 ## User Routes
 
-```
 ### Get All Users
+
+```
 - Route: api/v2/user/all
 - Method: GET
 - Authorization: Bearer Token, Admin
@@ -197,8 +198,9 @@
 }
 ```
 
-```
 ### Get All Donations
+
+```
 - Route: api/v2/donations
 - Method: GET
 - Authorization: Bearer Token, Admin
