@@ -19,7 +19,7 @@ const authorize = async (req, res, next) => {
 		console.log(authHeader);
 		const cookieValue = authHeader.split(" ")[1];
 		// } else if (process.env.NODE_ENV === "production") {
-		//   console.log(req.headers.cookie);
+		console.log(req.headers);
 		//   const cookieValue = req.headers.cookie.split("=")[1]
 		//   if (!cookieValue)
 		//     throw new appError("You are not logged in, Please Login Again", 403);
