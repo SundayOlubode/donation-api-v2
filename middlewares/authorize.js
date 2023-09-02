@@ -19,7 +19,10 @@ const authorize = async (req, res, next) => {
       token = authHeader.split(" ")[1];
     } else if (process.env.NODE_ENV === "production") {
       console.log(req);
+      console.log('Headers: ',req.headers);
+      console.log('Header Cookie: ', req.headers.cookie);
       const cookieValue = req.cookie.jwt;
+      console.log('Cookie.jwt', cookieValue);
       if (!cookieValue)
         throw new appError("You are not logged in, Please Login Again", 403);
 
