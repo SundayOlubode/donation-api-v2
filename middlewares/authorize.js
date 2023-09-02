@@ -9,6 +9,7 @@ require('dotenv').config()
 const authorize = async (req, res, next) => {
 	try {
 		/** testing authorization**/
+		console.log(req.headers);
 		let token;
 		// if (process.env.NODE_ENV === "development") {
 		const authHeader = req.headers.authorization;
