@@ -49,8 +49,6 @@ exports.getAllDonations = async (req, res, next) => {
         let allDonations;
         allDonations = await Cache.get('allDonations')
 
-        console.log(allDonations);
-
         if (allDonations)
             return returnDataInCache(allDonations, res)
 

@@ -10,22 +10,23 @@ const authorize = async (req, res, next) => {
   try {
     /** testing authorization**/
     let token;
-    if (process.env.NODE_ENV === "development") {
+    // if (process.env.NODE_ENV === "development") {
       const authHeader = req.headers.authorization;
       if (!authHeader)
         throw new appError("You are not logged in, Please Login Again", 403);
 
       //Save token from authHeader if available
+      console.log(authHeader);
       token = authHeader.split(" ")[1];
-    } else if (process.env.NODE_ENV === "production") {
-      console.log(req.headers.cookie);
-      const cookieValue = req.headers.cookie.split("=")[1]
-      if (!cookieValue)
-        throw new appError("You are not logged in, Please Login Again", 403);
+    // } else if (process.env.NODE_ENV === "production") {
+    //   console.log(req.headers.cookie);
+    //   const cookieValue = req.headers.cookie.split("=")[1]
+    //   if (!cookieValue)
+    //     throw new appError("You are not logged in, Please Login Again", 403);
 
       //SAVE TOKEN FROM COOKIE
       token = cookieValue;
-    }
+    // }
 
     // verify token
     const verifiedToken = await promisify(jwt.verify)(
