@@ -11,32 +11,32 @@ const crypto = require('crypto')
  */
 exports.signup = async (req, res, next) => {
 
-    const { email, password, confirmPassword, firstname, lastname, role } = req.body
+  const { email, password, confirmPassword, firstname, lastname, role } = req.body
 
-    try {
+  try {
 
-        if(!(password === confirmPassword)){
-            throw new appError('Password and Confirm Password must be same', 400)
-        }
-
-        if (!(email && password && firstname && lastname)) {
-            throw new appError('Please provide full sign up details', 400)
-        }
-
-        const oldUser = await Users.findOne({ email })
-        if (oldUser) throw new appError("User already exists. Please login", 409);
-
-        const user = await Users.create(req.body);
-
-        // SEND WELCOME MAIL
-        let url = process.env.WELCOMEURL
-        await new EmailToUsers(user, url).sendWelcome()
-
-        return createSendToken(user, 201, res)
-
-    } catch (error) {
-        return next(new appError(error.message, error.statusCode))
+    if (!(password === confirmPassword)) {
+      throw new appError('Password and Confirm Password must be same', 400)
     }
+
+    if (!(email && password && firstname && lastname)) {
+      throw new appError('Please provide full sign up details', 400)
+    }
+
+    const oldUser = await Users.findOne({ email })
+    if (oldUser) throw new appError("User already exists. Please login", 409);
+
+    const user = await Users.create(req.body);
+
+    // SEND WELCOME MAIL
+    let url = process.env.WELCOMEURL
+    await new EmailToUsers(user, url).sendWelcome()
+
+    return createSendToken(user, 201, res)
+
+  } catch (error) {
+    return next(new appError(error.message, error.statusCode))
+  }
 }
 
 /**
@@ -44,60 +44,60 @@ exports.signup = async (req, res, next) => {
  */
 exports.login = async (req, res, next) => {
 
-    const { email, password } = req.body
+  const { email, password } = req.body
 
-    try {
-        if (!(email || password)) {
-            throw new appError('Please provide login details', 400)
-        }
-
-        const user = await Users.findOne({ email })
-        // CHECK IF USER EXISTS WITHOUT LEAKING EXTRA INFOS
-        if (!user || !(await user.isValidPassword(password))) {
-            throw new appError('Email or Password incorrect', 401)
-        }
-
-        return createSendToken(user, 201, res)
-
-    } catch (error) {
-        return next(new appError(error.message, error.statusCode))
+  try {
+    if (!(email || password)) {
+      throw new appError('Please provide login details', 400)
     }
+
+    const user = await Users.findOne({ email })
+    // CHECK IF USER EXISTS WITHOUT LEAKING EXTRA INFOS
+    if (!user || !(await user.isValidPassword(password))) {
+      throw new appError('Email or Password incorrect', 401)
+    }
+
+    return createSendToken(user, 201, res)
+
+  } catch (error) {
+    return next(new appError(error.message, error.statusCode))
+  }
 }
 
 /**
  * FORGOT PASSWORD
  */
 exports.forgotPassword = async (req, res, next) => {
-    const { email } = req.body
+  const { email } = req.body
 
-    try {
+  try {
 
-        const user = await Users.findOne({ email });
-        if (!user) throw new appError("User not found!", 401);
+    const user = await Users.findOne({ email });
+    if (!user) throw new appError("User not found!", 401);
 
-        const { resetToken, passwordToken, passwordResetExpiry } = createPasswdResetToken()
+    const { resetToken, passwordToken, passwordResetExpiry } = createPasswdResetToken()
 
-        user.passwordToken = passwordToken;
-        user.passwordResetExpiry = passwordResetExpiry;
+    user.passwordToken = passwordToken;
+    user.passwordResetExpiry = passwordResetExpiry;
 
-        await user.save()
+    await user.save()
 
-        //SEND MAIL TO USER TO RESET PASSWORD
-        const resetUrl = `${req.protocol}://${req.get(
-            "host"
-        )}/api/v2/auth/resetpassword/${resetToken}`;
+    //SEND MAIL TO USER TO RESET PASSWORD
+    const resetUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v2/auth/resetpassword/${resetToken}`;
 
-        // SEND EMAIL TO CLIENT
-        await new EmailToUsers(user, resetUrl).sendPasswordReset();
+    // SEND EMAIL TO CLIENT
+    await new EmailToUsers(user, resetUrl).sendPasswordReset();
 
-        return res.status(200).json({
-            status: "success",
-            message: `Token sent to mail ${resetUrl}`,
-        });
+    return res.status(200).json({
+      status: "success",
+      message: `Token sent to mail ${resetUrl}`,
+    });
 
-    } catch (error) {
-        return next(new appError(error.message, error.statusCode))
-    }
+  } catch (error) {
+    return next(new appError(error.message, error.statusCode))
+  }
 
 }
 
@@ -105,79 +105,79 @@ exports.forgotPassword = async (req, res, next) => {
  * RESET PASSWORD
  */
 exports.resetPassword = async (req, res, next) => {
-    // CREATE A HASHED TOKEN FROM THE REQ PARAMS
-    const hashedToken = crypto
-        .createHash("sha256")
-        .update(req.params.token)
-        .digest("hex");
+  // CREATE A HASHED TOKEN FROM THE REQ PARAMS
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
 
-    try {
+  try {
 
-        const user = await Users.findOne({
-            passwordToken: hashedToken,
-            passwordResetExpiry: { $gte: Date.now() }
-        })
+    const user = await Users.findOne({
+      passwordToken: hashedToken,
+      passwordResetExpiry: { $gte: Date.now() }
+    })
 
-        if (!user) throw new appError('Expired or Invalid Token! Please try again', 403)
+    if (!user) throw new appError('Expired or Invalid Token! Please try again', 403)
 
-        const password = req.body.password;
-        const confirmPassword = req.body.confirmPassword;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
 
-        if (!(password === confirmPassword)) {
-            throw new appError('Password and ConfirmPassword must be same', 403)
-        }
-
-        user.password = password;
-        user.passwordToken = null;
-        user.passwordResetExpiry = null;
-
-        await user.save();
-
-        const url = `${req.protocol}://${req.get("host")}/api/v1/auth/login`;
-        // SEND SUCCESS MAIL TO CLIENT
-        await new EmailToUsers(user, url).sendVerifiedPSWD();
-
-        // LOG IN USER AND SEND JWT
-        return createSendToken(user, 200, res);
-
-    } catch (error) {
-        return next(new appError(error.message, error.statusCode))
+    if (!(password === confirmPassword)) {
+      throw new appError('Password and ConfirmPassword must be same', 403)
     }
+
+    user.password = password;
+    user.passwordToken = null;
+    user.passwordResetExpiry = null;
+
+    await user.save();
+
+    const url = `${req.protocol}://${req.get("host")}/api/v1/auth/login`;
+    // SEND SUCCESS MAIL TO CLIENT
+    await new EmailToUsers(user, url).sendVerifiedPSWD();
+
+    // LOG IN USER AND SEND JWT
+    return createSendToken(user, 200, res);
+
+  } catch (error) {
+    return next(new appError(error.message, error.statusCode))
+  }
 }
 
 exports.socialAuth = async (req, res, next) => {
-    try {
-          
-        // OBTAIN USER DETAILS FROM SESSION
-        const {
-            user: { user, token, oldUser }
-        } = req.session.passport;
+  try {
 
-        const cookieOptions = {
-            expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
-            httpOnly: true,
-        };
-        if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+    // OBTAIN USER DETAILS FROM SESSION
+    const {
+      user: { user, token, oldUser }
+    } = req.session.passport;
 
-        // Send token to client
-        await res.cookie("jwt", token, cookieOptions);
+    const cookieOptions = {
+      expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
+    if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
-        // SEND WELCOME MAIL
-        if(user){ //IF NEW USER
-            let url = process.env.WELCOMEURL
-            await new EmailToUsers(user, url).sendWelcome()
-        }
+    // Send token to client
+    await res.cookie("jwt", token, cookieOptions);
 
-        const data = {
-            user, oldUser,
-            token,
-        }
-
-        return res.status(200).json({
-            status: 'success',
-            data
-        })
-    } catch (error) {
-      return next(new appError(error.message, error.statusCode))      
+    // SEND WELCOME MAIL
+    if (user) { //IF NEW USER
+      let url = process.env.WELCOMEURL
+      await new EmailToUsers(user, url).sendWelcome()
     }
+
+    const data = {
+      user, oldUser,
+      token,
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      data
+    })
+  } catch (error) {
+    return next(new appError(error.message, error.statusCode))
+  }
 }

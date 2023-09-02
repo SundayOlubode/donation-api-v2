@@ -21,25 +21,25 @@ require('./models/db').init()
 
 // USE CORS
 app.use(
-    cors({
-        credentials: true,
-        origin: ["https://special-potato-44r79pp54x7255r7-5173.app.github.dev"],
-        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-        preflightContinue: true
-    })
+  cors({
+    credentials: true,
+    origin: ["https://special-potato-44r79pp54x7255r7-5173.app.github.dev"],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    preflightContinue: true
+  })
 );
 
 // USE SESSION
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl: process.env.DEV_MONGO_URL || process.env.MONGO_URL,
-            collectionName: 'sessions'
-        })
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.DEV_MONGO_URL || process.env.MONGO_URL,
+      collectionName: 'sessions'
     })
+  })
 )
 
 app.use(bodyParser.json())
@@ -48,9 +48,9 @@ app.use(httpLogger)
 app.use(rateLimiter)
 
 app.get("/", (req, res) => {
-    return res.send(
-        "Welcome to the CACSA-UI! \n <a href='/api/v2/auth/google'>Continue with Google</a>"
-    );
+  return res.send(
+    "Welcome to the CACSA-UI! \n <a href='/api/v2/auth/google'>Continue with Google</a>"
+  );
 });
 
 // REGISTER ROUTES
@@ -59,7 +59,7 @@ app.use('/api/v2/user', userRouter)
 app.use('/api/v2/donations', donationRouter)
 
 app.use('*', (req, res, next) => {
-    return next(new appError(`${req.originalUrl} not found on this server`, 404));
+  return next(new appError(`${req.originalUrl} not found on this server`, 404));
 })
 
 app.use(globalErrorHandler)

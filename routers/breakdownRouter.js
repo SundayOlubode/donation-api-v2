@@ -4,7 +4,7 @@ const restrictTo = require('./../middlewares/restrictTo')
 const authorize = require('./../middlewares/authorize')
 
 const {
-    getBreakdown, postDisbursed,
+  getBreakdown, postDisbursed,
 } = require('./../controllers/breakdownController')
 
 router.get('/', authorize, getBreakdown)

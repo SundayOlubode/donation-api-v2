@@ -6,7 +6,7 @@ const restrictTo = require('./../middlewares/restrictTo')
 const breakdownRouter = require('./breakdownRouter')
 
 const {
-    getAllDonations, addDonation,
+  getAllDonations, addDonation,
 } = require('./../controllers/donationController')
 
 router.use('/breakdown', breakdownRouter)

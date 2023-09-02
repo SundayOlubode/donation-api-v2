@@ -1,29 +1,36 @@
 # Donation API
 
 ## Stack
-- *Language : Javascript(nodejs)*
-- *Framework : Expressjs*
-- *Database: MongoDB, Mongoose*
+
+- _Language : Javascript(nodejs)_
+- _Framework : Expressjs_
+- _Database: MongoDB, Mongoose_
 
 ## Features
+
 #### Auth
+
 - Signup (JWT in cookie)
 - Login (JWT in cookie)
 
 #### Users
+
 - See Own Donations
 - Get All donations
 - Disburse Donations
 - Get Breakdown
 - Get Own Donations
 
-
 # Routes
+
 ## Auth Routes
+
 ### Signup User
+
 - Route: api/v2/auth/signup
 - Method: POST
-- Body: 
+- Body:
+
 ```
 {
     "email": "testing@gmail.com",
@@ -33,7 +40,9 @@
     "lastname": "Surname"
 }
 ```
+
 - Response:
+
 ```
 {
     "status": "success",
@@ -52,9 +61,11 @@
 ```
 
 ### Login
+
 - Route: api/v2/auth/login
 - Method: POST
-- Body: 
+- Body:
+
 ```
 {
     "email": "testing@gmail.com",
@@ -63,6 +74,7 @@
 ```
 
 - Response:
+
 ```
 {
     "status": "success",
@@ -79,10 +91,13 @@
     }
 }
 ```
+
 ### Forget Password
+
 - Route: api/v2/auth/forgotPassword
 - Method: PATCH
-- Body: 
+- Body:
+
 ```
 {
     "email": "testing@gmail.com"
@@ -90,6 +105,7 @@
 ```
 
 - Response:
+
 ```
 {
     "status": "success",
@@ -98,9 +114,11 @@
 ```
 
 ### Reset Password
+
 - Route: api/v2/auth/resetpassword/13ead9591bb6040f378ff9ce778372f2487e771b7b82ce5d7b8ccf871b3c5c1e
 - Method: PATCH
-- Body: 
+- Body:
+
 ```
 {
     "password": "zuzu",
@@ -109,6 +127,7 @@
 ```
 
 - Response:
+
 ```
 {
     "status": "success",
@@ -127,14 +146,66 @@
     }
 }
 ```
+
 ## User Routes
+
+```
+### Get All Users
+- Route: api/v2/user/all
+- Method: GET
+- Authorization: Bearer Token, Admin
+```
+
+- Response:
+
+```
+{
+    "status": "success",
+    "data": {
+        "donors": [
+            {
+                "_id": "64efd308d03b2b4c32aa2ac0",
+                "email": "email@gmail.com",
+                "password": "$2b$10$9e1/VCrEEuDCjvbnMKnxhulDL5MU4vgz0mz2bHEmHAg3Hde5G/7Fu",
+                "firstname": "Sam",
+                "lastname": "Olu",
+                "role": "donor",
+                "__v": 0,
+                "passwordResetExpiry": null,
+                "passwordToken": null
+            },
+            {
+                "_id": "64f1136f54fec7608874ccb6",
+                "email": "email@gmail.com",
+                "firstname": "Sunday",
+                "lastname": "Olubode",
+                "role": "donor",
+                "googleId": "11407166",
+                "__v": 0
+            },
+            {
+                "_id": "64f3b2790757e63ed7ef0a45",
+                "email": "testing@gmail.com",
+                "password": "$2b$10$VUvdXc86vpFIjSt7jMkXSOjHcrdMwJpFJ7oBqtZ2OhJ7xgEsoZ4.e",
+                "firstname": "testing",
+                "lastname": "surname",
+                "role": "admin",
+                "__v": 0
+            }
+        ]
+    }
+}
+```
+
 ```
 ### Get All Donations
 - Route: api/v2/donations
 - Method: GET
-- Authorization: Bearer Token || Cookie
+- Authorization: Bearer Token, Admin
 ```
+
 - Response:
+
 ```
 {
     "status": "success",
@@ -151,13 +222,17 @@
     }
 }
 ```
+
 ### Get My Donations
+
 ```
 - Route: api/v2/user/me/donations
 - Method: GET
 - Authorization: Bearer Token || Cookie
 ```
+
 - Response:
+
 ```
 {
     "status": "success",
@@ -166,14 +241,18 @@
     }
 }
 ```
+
 ### Get Donations Breakdown
+
 ```
 - Route: api/v2/donations/breakdown
 - Method: GET
 - Authorization: Bearer Token || Cookie
 
 ```
+
 - Response:
+
 ```
 {
     "status": "success",
@@ -190,12 +269,15 @@
 ```
 
 ### Add Donations
+
 ```
 - Route: api/v2/user/donations/add
 - Method: POST
 - Authorization: Bearer Token || Cookie
 ```
+
 - Body:
+
 ```
 {
     "amount": 80000,
@@ -203,24 +285,31 @@
     "date": (optional)
 }
 ```
+
 - Response:
+
 ```
 {
     "status": "success",
     "message": "You will receive a mail soon"
 }
 ```
+
 ### Disburse
+
 - Route: api/v2/donations/breakdown/disburse
 - Method: PATCH
 - Authorization: Bearer Token || Cookie
 - Body:
+
 ```
 {
     "amount": 20000
 }
 ```
+
 - Response:
+
 ```
 {
     "status": "success",

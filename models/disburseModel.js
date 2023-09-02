@@ -3,18 +3,18 @@ const { Schema } = mongoose
 
 // DISBURSEMENT HISTORY
 const disbursementSchema = new Schema({
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    amount: {
-        type: Number,
-        default: 0
-    },
-    balance: {
-        type: Number,
-        default: 0
-    }
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  amount: {
+    type: Number,
+    default: 0
+  },
+  balance: {
+    type: Number,
+    default: 0
+  }
 })
 
 /**
