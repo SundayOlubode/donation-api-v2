@@ -8,6 +8,7 @@ const Cache = require('./configs/redis')
 process.on('uncaughtException', (error, origin) => {
     logger.error("UNCAUGHT EXCEPTION! 🔥 Shutting Down...");
     logger.error(error.name, error.message);
+    logger.error(error);
     process.exit(1);
 })
 

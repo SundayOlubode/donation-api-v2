@@ -9,33 +9,33 @@ const Users = require('../models/userModel')
  * GET MY DONATIONS
 */
 exports.getMyDonations = async (req, res, next) => {
-    try {
+	try {
 
-        let donations;
-        const user_id = req.user
+		let donations;
+		const user_id = req.user
 
-        donations = await Cache.get(`${user_id}-donations`)
+		donations = await Cache.get(`${user_id}-donations`)
 
-        if(donations)
-            return returnDataInCache(donations, res)
+		if (donations)
+			return returnDataInCache(donations, res)
 
-        donations = await Donations.find({
-            donor_id: user_id
-        })
+		donations = await Donations.find({
+			donor_id: user_id
+		})
 
-        const cacheValue = JSON.stringify(donations)
-        await Cache.set(`${user_id}-donations`, cacheValue)
+		const cacheValue = JSON.stringify(donations)
+		await Cache.set(`${user_id}-donations`, cacheValue)
 
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                donations
-            }
-        })
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				donations
+			}
+		})
 
-    } catch (error) {
-        return next(new appError(error.message, error.statusCode))
-    }
+	} catch (error) {
+		return next(new appError(error.message, error.statusCode))
+	}
 }
 
 
@@ -44,28 +44,28 @@ exports.getMyDonations = async (req, res, next) => {
 */
 exports.getAllDonations = async (req, res, next) => {
 
-    try {
+	try {
 
-        let allDonations;
-        allDonations = await Cache.get('allDonations')
+		let allDonations;
+		allDonations = await Cache.get('allDonations')
 
-        if (allDonations)
-            return returnDataInCache(allDonations, res)
+		if (allDonations)
+			return returnDataInCache(allDonations, res)
 
-        let cacheValue = JSON.stringify(allDonations)
-        await Cache.set('allDonations', cacheValue)
+		let cacheValue = JSON.stringify(allDonations)
+		await Cache.set('allDonations', cacheValue)
 
-        return res.status(200).json({
-            status: 'success',
-            data: {
-                allDonations
-            }
-        })
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				allDonations
+			}
+		})
 
-    } catch (error) {
-        logger.error(error)
-        return next(new appError(error.message, error.statusCode))
-    }
+	} catch (error) {
+		logger.error(error)
+		return next(new appError(error.message, error.statusCode))
+	}
 }
 
 /**
@@ -73,48 +73,48 @@ exports.getAllDonations = async (req, res, next) => {
  */
 exports.addDonation = async (req, res, next) => {
 
-    const { amount, date, userId } = req.body
+	const { amount, date, userId } = req.body
 
-    try {
+	try {
 
-        const user = await Users.findById(userId)
+		const user = await Users.findById(userId)
 
-        if(!user){
-          throw new appError('User not found!', 500)
-        }
+		if (!user) {
+			throw new appError('User not found!', 500)
+		}
 
-        const donation = await Donations.create({
-            amount, date, donor_id: userId
-        })
+		const donation = await Donations.create({
+			amount, date, donor_id: userId
+		})
 
-        const url = 'frontend url' //TODO: ADD FE USER PROFILE URL
+		const url = 'frontend url' //TODO: ADD FE USER PROFILE URL
 
-        await new EmailToUsers(user, url, donation).notifyDonor()
+		await new EmailToUsers(user, url, donation).notifyDonor()
 
-        return res.status(200).json({
-            status: 'success',
-            message: 'You will receive a mail soon'
-        })
+		return res.status(200).json({
+			status: 'success',
+			message: 'You will receive a mail soon'
+		})
 
-    } catch (error) {
-        return next(new appError(error.message, error.statusCode))
-    }
+	} catch (error) {
+		return next(new appError(error.message, error.statusCode))
+	}
 }
 
 /**
  * RETURN DATA IN CACHE
  */
 const returnDataInCache = async (donations, res) => {
-    try {
+	try {
 
-        return res.status(200).json({
-            status: 'success',
-            data: {
-              donations: JSON.parse(donations)
-            }
-        })
+		return res.status(200).json({
+			status: 'success',
+			data: {
+				donations: JSON.parse(donations)
+			}
+		})
 
-    } catch (error) {
-        return next(new appError(error.message, error.statusCode))
-    }
+	} catch (error) {
+		return next(new appError(error.message, error.statusCode))
+	}
 }
