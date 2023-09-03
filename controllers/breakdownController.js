@@ -24,7 +24,7 @@ exports.getBreakdown = async (req, res, next) => {
 
     breakdown = await Breakdown.findOne()
 
-    await Cache.set('breakdown', JSON.stringify(breakdown))
+    await Cache.set('breakdown', JSON.stringify(breakdown), { EX: 60 })
 
     return res.status(200).json({
       status: 'success',
@@ -59,7 +59,7 @@ exports.postDisbursed = async (req, res, next) => {
     await Disbursement.create({ amount, balance: breakdown.balance })
     await breakdown.save()
 
-    await Cache.set('breakdown', JSON.stringify(breakdown))
+    await Cache.set('breakdown', JSON.stringify(breakdown), { EX: 60 })
 
     return res.status(200).json({
       status: 'success',

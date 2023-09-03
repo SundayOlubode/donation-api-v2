@@ -24,7 +24,7 @@ exports.getMyDonations = async (req, res, next) => {
     })
 
     const cacheValue = JSON.stringify(donations)
-    await Cache.set(`${user_id}-donations`, cacheValue)
+    await Cache.set(`${user_id}-donations`, cacheValue, { EX: 600 })
 
     return res.status(200).json({
       status: 'success',
@@ -52,8 +52,10 @@ exports.getAllDonations = async (req, res, next) => {
     if (allDonations)
       return returnDataInCache(allDonations, res)
 
+    allDonations = await Donations.find()
+
     let cacheValue = JSON.stringify(allDonations)
-    await Cache.set('allDonations', cacheValue)
+    await Cache.set('allDonations', cacheValue, { EX: 600 })
 
     return res.status(200).json({
       status: 'success',
@@ -88,7 +90,6 @@ exports.addDonation = async (req, res, next) => {
     })
 
     const url = 'frontend url' //TODO: ADD FE USER PROFILE URL
-
     await new EmailToUsers(user, url, donation).notifyDonor()
 
     return res.status(200).json({
