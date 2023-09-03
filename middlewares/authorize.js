@@ -33,7 +33,7 @@ const authorize = async (req, res, next) => {
     req.user = currentUser._id
     next()
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 

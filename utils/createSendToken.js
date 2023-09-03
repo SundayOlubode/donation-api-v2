@@ -8,27 +8,31 @@ const Users = require("../models/userModel")
  * @param {*} res
  */
 exports.createSendToken = async (user, statusCode, res) => {
-  // CREATE JWT WITH MODEL INSTANCE
-  const token = await user.createJWT()
-  const cookieOptions = {
-    expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
-    httpOnly: true,
-    sameSite: "Strict",
+  try {
+    // CREATE JWT WITH MODEL INSTANCE
+    const token = await user.createJWT()
+    const cookieOptions = {
+      expires: new Date(Date.now() + 1 * 60 * 60 * 1000),
+      httpOnly: true,
+      sameSite: "Strict",
+    }
+    if (process.env.NODE_ENV === "production") cookieOptions.secure = true
+
+    // SEND TOKEN TO CLIENT
+    res.cookie("jwt", token, cookieOptions)
+
+    user.password = undefined
+
+    const data = {
+      user,
+      token,
+    }
+
+    res.status(statusCode).json({
+      status: "success",
+      data,
+    })
+  } catch (error) {
+    return next(error)
   }
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true
-
-  // SEND TOKEN TO CLIENT
-  res.cookie("jwt", token, cookieOptions)
-
-  user.password = undefined
-
-  const data = {
-    user,
-    token,
-  }
-
-  res.status(statusCode).json({
-    status: "success",
-    data,
-  })
 }

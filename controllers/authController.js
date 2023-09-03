@@ -28,7 +28,6 @@ exports.signup = async (req, res, next) => {
     const user = await Users.create({
       email,
       password,
-      confirmPassword,
       firstname,
       lastname,
       role,
@@ -40,7 +39,7 @@ exports.signup = async (req, res, next) => {
 
     return createSendToken(user, 201, res)
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 
@@ -63,7 +62,7 @@ exports.login = async (req, res, next) => {
 
     return createSendToken(user, 201, res)
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 
@@ -101,7 +100,7 @@ exports.forgotPassword = async (req, res, next) => {
       message: `Token sent to mail ${resetUrl}`,
     })
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 
@@ -137,14 +136,14 @@ exports.resetPassword = async (req, res, next) => {
 
     await user.save()
 
-    const url = `${req.protocol}://${req.get("host")}/api/v1/auth/login`
+    const url = `${req.protocol}://${req.get("host")}/api/v2/auth/login`
     // SEND SUCCESS MAIL TO CLIENT
     await new EmailToUsers(user, url).sendVerifiedPSWD()
 
     // LOG IN USER AND SEND JWT
     return createSendToken(user, 200, res)
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 
@@ -182,6 +181,6 @@ exports.socialAuth = async (req, res, next) => {
       data,
     })
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }

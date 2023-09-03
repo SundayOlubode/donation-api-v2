@@ -22,7 +22,7 @@ const restrictTo = (role) => {
 
       return next()
     } catch (error) {
-      return next(new appError(error.message, error.statusCode))
+      return next(error)
     }
   }
 }

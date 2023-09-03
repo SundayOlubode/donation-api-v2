@@ -32,7 +32,7 @@ exports.getBreakdown = async (req, res, next) => {
       },
     })
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 
@@ -62,6 +62,6 @@ exports.postDisbursed = async (req, res, next) => {
       message: "Disbursed successfully!",
     })
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }

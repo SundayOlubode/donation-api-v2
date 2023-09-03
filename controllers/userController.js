@@ -26,6 +26,6 @@ exports.getAllUsers = async (req, res, next) => {
       data: { donors: users },
     })
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }

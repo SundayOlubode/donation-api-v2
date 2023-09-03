@@ -58,7 +58,7 @@ exports.getAllDonations = async (req, res, next) => {
     })
   } catch (error) {
     logger.error(error)
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 
@@ -89,7 +89,7 @@ exports.addDonation = async (req, res, next) => {
       message: "You will receive a mail soon",
     })
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
 
@@ -105,6 +105,6 @@ const returnDataInCache = async (donations, res) => {
       },
     })
   } catch (error) {
-    return next(new appError(error.message, error.statusCode))
+    return next(error)
   }
 }
