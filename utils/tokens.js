@@ -1,12 +1,12 @@
-const crypto = require('crypto')
+const crypto = require("crypto")
 
 exports.createPasswdResetToken = () => {
-  const resetToken = crypto.randomBytes(32).toString('hex');
+  const resetToken = crypto.randomBytes(32).toString("hex")
   const passwordToken = crypto
-    .createHash('sha256')
+    .createHash("sha256")
     .update(resetToken)
-    .digest('hex')
+    .digest("hex")
 
-  const passwordResetExpiry = Date.now() + 10 * 60 * 1000;
+  const passwordResetExpiry = Date.now() + 10 * 60 * 1000
   return { resetToken, passwordToken, passwordResetExpiry }
 }

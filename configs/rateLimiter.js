@@ -1,4 +1,4 @@
-const rateLimiter = require('express-rate-limit')
+const rateLimiter = require("express-rate-limit")
 
 /**
  * Rate Limiter
@@ -9,11 +9,12 @@ const limiter = rateLimiter({
   max: 30, // Limit each User OR IP to 30 requests per `window` (here, per 2 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  message: 'Too many requests!',
+  message: "Too many requests!",
   skipFailedRequests: true,
-  keyGenerator: (req, res) => { // USER ID OR IP
+  keyGenerator: (req, res) => {
+    // USER ID OR IP
     return req.user || req.ip
-  }
+  },
 })
 
 module.exports = limiter

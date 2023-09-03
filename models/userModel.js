@@ -1,58 +1,57 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 const { Schema } = mongoose
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const validator = require('validator')
-const appError = require('../utils/appError')
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+const validator = require("validator")
+const appError = require("../utils/appError")
 
 const userSchema = new Schema({
   email: {
     type: String,
-    required: [true, 'Email is required!'],
-    unique: [true, 'Email already exist!'],
-    validate: value => {
-      if (!validator.isEmail(value)) throw new appError(`Invalid Email address`, 400)
-    }
+    required: [true, "Email is required!"],
+    unique: [true, "Email already exist!"],
+    validate: (value) => {
+      if (!validator.isEmail(value))
+        throw new appError(`Invalid Email address`, 400)
+    },
   },
   password: {
-    type: String
+    type: String,
   },
   firstname: {
     type: String,
-    required: true
+    required: true,
   },
   lastname: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
-    default: 'donor',
-    enum: ['donor', 'admin']
+    default: "donor",
+    enum: ["donor", "admin"],
   },
   googleId: {
-    type: String
+    type: String,
   },
   passwordToken: String,
   passwordResetExpiry: Date,
 })
 
-
-userSchema.pre('save', async function (next) {
-  if (this.password)
-    this.password = await bcrypt.hash(this.password, 10)
+userSchema.pre("save", async function (next) {
+  if (this.password) this.password = await bcrypt.hash(this.password, 10)
   next()
 })
 
 userSchema.methods.isValidPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+  return await bcrypt.compare(password, this.password)
 }
 
 userSchema.methods.createJWT = async function () {
   return await jwt.sign({ user_id: this.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES,
-  });
-};
+  })
+}
 
-const userModel = mongoose.model('user', userSchema)
-module.exports = userModel;
+const userModel = mongoose.model("user", userSchema)
+module.exports = userModel

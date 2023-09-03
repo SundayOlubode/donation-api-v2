@@ -1,10 +1,10 @@
 // ALLOW ONLY ADMIN
-const Users = require('../models/userModel')
-const appError = require('../utils/appError')
+const Users = require("../models/userModel")
+const appError = require("../utils/appError")
 
-/** 
- * RESTRICT ACCESS TO THE SPECIFIED ROLE 
-*/
+/**
+ * RESTRICT ACCESS TO THE SPECIFIED ROLE
+ */
 const restrictTo = (role) => {
   return async (req, res, next) => {
     try {
@@ -13,11 +13,11 @@ const restrictTo = (role) => {
       const user = await Users.findById(user_id)
 
       if (!user) {
-        return next(new appError('User not found!', 400))
+        return next(new appError("User not found!", 400))
       }
 
       if (!(user.role === role)) {
-        return next(new appError('Unauthorized', 401))
+        return next(new appError("Unauthorized", 401))
       }
 
       return next()
@@ -26,6 +26,5 @@ const restrictTo = (role) => {
     }
   }
 }
-
 
 module.exports = restrictTo

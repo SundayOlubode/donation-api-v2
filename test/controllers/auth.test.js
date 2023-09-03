@@ -1,7 +1,6 @@
-const request = require('supertest')
-const authController = require('../../controllers/authController')
+const request = require("supertest")
+const authController = require("../../controllers/authController")
 
-
-describe('Auth Controller', () => {
-    it('Should ')
+describe("Auth Controller", () => {
+  it("Should ")
 })
