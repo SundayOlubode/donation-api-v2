@@ -45,10 +45,6 @@ exports.postDisbursed = async (req, res, next) => {
 
     const breakdown = await Breakdown.findOne()
 
-    console.log(amount > breakdown.balance)
-    console.log(amount)
-    console.log(breakdown.balance)
-
     if (amount > breakdown.balance) {
       throw new appError("Disbursement Greater Than Balance!", 400)
     }

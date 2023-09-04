@@ -83,7 +83,7 @@ exports.addDonation = async (req, res, next) => {
       userId,
     })
 
-    // INCREMENT BREAKDOWN BALANCE WITH DONATION AMOUNT
+    // INCREMENT BREAKDOWN BALANCE AND TOTAL WITH DONATION AMOUNT
     const breakdown = await Breakdown.findOne()
     breakdown.total += amount
     breakdown.balance += amount
