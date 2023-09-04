@@ -9,7 +9,7 @@ router.post("/login", authController.login)
 
 router.patch("/forgotPassword", authController.forgotPassword)
 
-router.patch("/resetPassword/:token", authController.resetPassword)
+router.patch("/resetPassword", authController.resetPassword)
 
 //GOOGLE OAUTH
 router.get("/google", passport.authenticate("google"))

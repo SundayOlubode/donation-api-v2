@@ -70,7 +70,7 @@ exports.login = async (req, res, next) => {
  * FORGOT PASSWORD
  */
 exports.forgotPassword = async (req, res, next) => {
-  const { email } = req.body
+  const { email, redirect } = req.body
 
   try {
     const user = await Users.findOne({ email })
@@ -87,17 +87,14 @@ exports.forgotPassword = async (req, res, next) => {
 
     await user.save()
 
-    //SEND MAIL TO USER TO RESET PASSWORD
-    const resetUrl = `${req.protocol}://${req.get(
-      "host",
-    )}/api/v2/auth/resetpassword/${resetToken}`
+    const url = `${redirect}?token=${resetToken}`
 
     // SEND EMAIL TO CLIENT
-    await new EmailToUsers(user, resetUrl).sendPasswordReset()
+    await new EmailToUsers(user, url).sendPasswordReset()
 
     return res.status(200).json({
       status: "success",
-      message: `Token sent to mail ${resetUrl}`,
+      message: `Token sent to mail ${url}`,
     })
   } catch (error) {
     return next(error)
@@ -111,7 +108,7 @@ exports.resetPassword = async (req, res, next) => {
   // CREATE A HASHED TOKEN FROM THE REQ PARAMS
   const hashedToken = crypto
     .createHash("sha256")
-    .update(req.params.token)
+    .update(req.body.token)
     .digest("hex")
 
   try {
@@ -125,6 +122,7 @@ exports.resetPassword = async (req, res, next) => {
 
     const password = req.body.password
     const confirmPassword = req.body.confirmPassword
+    const loginUrl = req.body.loginUrl
 
     if (!(password === confirmPassword)) {
       throw new appError("Password and ConfirmPassword must be same", 403)
@@ -136,9 +134,8 @@ exports.resetPassword = async (req, res, next) => {
 
     await user.save()
 
-    const url = `${req.protocol}://${req.get("host")}/api/v2/auth/login`
     // SEND SUCCESS MAIL TO CLIENT
-    await new EmailToUsers(user, url).sendVerifiedPSWD()
+    await new EmailToUsers(user, loginUrl).sendVerifiedPSWD()
 
     // LOG IN USER AND SEND JWT
     return createSendToken(user, 200, res)

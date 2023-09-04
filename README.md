@@ -115,12 +115,13 @@
 
 ### Reset Password
 
-- Route: api/v2/auth/resetpassword/13ead9591bb6040f378ff9ce778372f2487e771b7b82ce5d7b8ccf871b3c5c1e
+- Route: api/v2/auth/resetpassword
 - Method: PATCH
 - Body:
 
 ```
 {
+    "token": "13ead9591bb6040f378ff9ce778372f2487e771b7b82ce5d7b8ccf871b3c5c1e"
     "password": "zuzu",
     "confirmPassword": "zuzu"
 }
