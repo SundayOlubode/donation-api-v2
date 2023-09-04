@@ -7,7 +7,7 @@ const donationSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  donor_id: { type: mongoose.Types.ObjectId, ref: "user" },
+  userId: { type: mongoose.Types.ObjectId, ref: "user" },
 })
 
 const donationModel = mongoose.model("donation", donationSchema)

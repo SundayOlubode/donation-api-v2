@@ -19,7 +19,7 @@ exports.getMyDonations = async (req, res, next) => {
     if (donations) return returnDataInCache(donations, res)
 
     donations = await Donations.find({
-      donor_id: user_id,
+      userId: user_id,
     })
 
     const cacheValue = JSON.stringify(donations)
@@ -67,7 +67,8 @@ exports.getAllDonations = async (req, res, next) => {
  * NOTIFY ADMIN
  */
 exports.addDonation = async (req, res, next) => {
-  const { amount, date, userId } = req.body
+  const { date, userId } = req.body
+  const amount = Number(req.body.amount)
 
   try {
     const user = await Users.findById(userId)
@@ -79,7 +80,7 @@ exports.addDonation = async (req, res, next) => {
     const donation = await Donations.create({
       amount,
       date,
-      donor_id: userId,
+      userId,
     })
 
     // INCREMENT BREAKDOWN BALANCE WITH DONATION AMOUNT
@@ -87,6 +88,7 @@ exports.addDonation = async (req, res, next) => {
     breakdown.total += amount
     await breakdown.save()
 
+    // NOTIFY DONOR - THEIR DONATION RECORDED!
     const url = "frontend url" //TODO: ADD FE USER PROFILE URL
     await new EmailToUsers(user, url, donation).notifyDonor()
 
