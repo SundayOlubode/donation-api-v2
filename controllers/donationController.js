@@ -94,7 +94,7 @@ exports.addDonation = async (req, res, next) => {
 
     return res.status(200).json({
       status: "success",
-      message: "You will receive a mail soon",
+      message: "A mail be will sent to the donor soon",
     })
   } catch (error) {
     return next(error)
