@@ -4,6 +4,7 @@ const Cache = require("../configs/redis")
 const logger = require("../utils/logger")
 const { EmailToUsers } = require("../utils/emails")
 const Users = require("../models/userModel")
+const Breakdown = require("../models/breakdownModel")
 
 /**
  * GET MY DONATIONS
@@ -80,6 +81,11 @@ exports.addDonation = async (req, res, next) => {
       date,
       donor_id: userId,
     })
+
+    // INCREMENT BREAKDOWN BALANCE WITH DONATION AMOUNT
+    const breakdown = await Breakdown.findOne()
+    breakdown.total += amount
+    await breakdown.save()
 
     const url = "frontend url" //TODO: ADD FE USER PROFILE URL
     await new EmailToUsers(user, url, donation).notifyDonor()
