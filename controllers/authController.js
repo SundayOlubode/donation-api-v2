@@ -10,8 +10,7 @@ const crypto = require("crypto")
  * SIGNUP
  */
 exports.signup = async (req, res, next) => {
-  const { email, password, confirmPassword, firstname, lastname, role } =
-    req.body
+  const { email, password, confirmPassword, firstname, lastname } = req.body
 
   try {
     if (!(password === confirmPassword)) {
@@ -30,7 +29,6 @@ exports.signup = async (req, res, next) => {
       password,
       firstname,
       lastname,
-      role,
     })
 
     // SEND WELCOME MAIL

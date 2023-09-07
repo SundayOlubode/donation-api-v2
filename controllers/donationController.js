@@ -90,7 +90,7 @@ exports.addDonation = async (req, res, next) => {
     await breakdown.save()
 
     // NOTIFY DONOR - THEIR DONATION RECORDED!
-    const url = "frontend url" //TODO: ADD FE USER PROFILE URL
+    const url = "https://donation-app-frontend.onrender.com/login"
     await new EmailToUsers(user, url, donation).notifyDonor()
 
     return res.status(200).json({
