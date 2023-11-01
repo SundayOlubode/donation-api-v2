@@ -14,7 +14,7 @@ exports.getMyDonations = async (req, res, next) => {
     let donations
     const user_id = req.user
 
-    donations = await Cache.get(`${user_id}-donations`)
+    donations = await Cache.get(`donations?${user_id}`)
 
     if (donations) return returnDataInCache(donations, res)
 
@@ -23,7 +23,7 @@ exports.getMyDonations = async (req, res, next) => {
     })
 
     const cacheValue = JSON.stringify(donations)
-    await Cache.set(`${user_id}-donations`, cacheValue, { EX: 600 })
+    await Cache.set(`donations?${user_id}`, cacheValue, { EX: 600 })
 
     return res.status(200).json({
       status: "success",
@@ -41,20 +41,20 @@ exports.getMyDonations = async (req, res, next) => {
  */
 exports.getAllDonations = async (req, res, next) => {
   try {
-    let allDonations
-    allDonations = await Cache.get("allDonations")
+    let donations
+    donations = await Cache.get("allDonations")
 
-    if (allDonations) return returnDataInCache(allDonations, res)
+    if (donations) return returnDataInCache(donations, res)
 
-    allDonations = await Donations.find()
+    donations = await Donations.find()
 
-    let cacheValue = JSON.stringify(allDonations)
-    await Cache.set("allDonations", cacheValue, { EX: 600 })
+    let cacheValue = JSON.stringify(donations)
+    await Cache.set("allDonations", cacheValue, { EX: 60 })
 
     return res.status(200).json({
       status: "success",
       data: {
-        allDonations,
+        donations,
       },
     })
   } catch (error) {
