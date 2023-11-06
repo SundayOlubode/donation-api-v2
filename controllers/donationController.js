@@ -23,7 +23,7 @@ exports.getMyDonations = async (req, res, next) => {
     })
 
     const cacheValue = JSON.stringify(donations)
-    await Cache.set(`donations?${user_id}`, cacheValue, { EX: 600 })
+    await Cache.set(`donations?${user_id}`, cacheValue, { EX: 60 })
 
     return res.status(200).json({
       status: "success",
