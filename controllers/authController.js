@@ -10,7 +10,8 @@ const crypto = require("crypto")
  * SIGNUP
  */
 exports.signup = async (req, res, next) => {
-  const { email, password, confirmPassword, firstname, lastname } = req.body
+  let { email, password, confirmPassword, firstname, lastname } = req.body
+  email = email.toLowerCase()
 
   try {
     if (!(password === confirmPassword)) {
@@ -45,7 +46,8 @@ exports.signup = async (req, res, next) => {
  * LOGIN
  */
 exports.login = async (req, res, next) => {
-  const { email, password } = req.body
+  let { email, password } = req.body
+  email = email.toLowerCase()
 
   try {
     if (!(email || password)) {
@@ -68,7 +70,8 @@ exports.login = async (req, res, next) => {
  * FORGOT PASSWORD
  */
 exports.forgotPassword = async (req, res, next) => {
-  const { email, redirect } = req.body
+  let { email, redirect } = req.body
+  email = email.toLowerCase()
 
   try {
     const user = await Users.findOne({ email })
@@ -92,7 +95,7 @@ exports.forgotPassword = async (req, res, next) => {
 
     return res.status(200).json({
       status: "success",
-      message: `Token sent to mail ${url}`,
+      message: `Token sent to mail! ${url}`,
     })
   } catch (error) {
     return next(error)
