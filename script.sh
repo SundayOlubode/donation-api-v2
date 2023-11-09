@@ -6,6 +6,6 @@ curl -X POST https://messages-sandbox.nexmo.com/v1/messages \
     "from": "250791982790",
     "to": "14157386102",
     "message_type": "text",
-    "text": "This is a WhatsApp Message sent from the Messages API",
+    "text": "This is a WhatsApp Message sent Donation API",
     "channel": "whatsapp"
   }'
