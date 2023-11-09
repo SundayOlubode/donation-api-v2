@@ -1,5 +1,5 @@
 curl -X POST https://messages-sandbox.nexmo.com/v1/messages \
-  -u '44f157fc:MZWc6RydKJc48cke' \
+  -u 'ght' \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json' \
   -d '{
