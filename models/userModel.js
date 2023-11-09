@@ -26,6 +26,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  phone_number: {
+    type: String,
+    required: true,
+    validator: (value) => {
+      if (!validator.isMobilePhone(value))
+        throw new appError(`Invalid Phone number`, 400)
+    },
+  },
   role: {
     type: String,
     default: "donor",
