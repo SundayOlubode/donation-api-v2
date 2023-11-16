@@ -10,7 +10,7 @@ const crypto = require("crypto")
  * SIGNUP
  */
 exports.signup = async (req, res, next) => {
-  let { email, password, confirmPassword, phone_number, firstname, lastname } =
+  let { email, password, confirmPassword, phoneNumber, firstname, lastname } =
     req.body
   email = email.toLowerCase()
 
@@ -31,7 +31,7 @@ exports.signup = async (req, res, next) => {
       password,
       firstname,
       lastname,
-      phone_number,
+      phoneNumber,
     })
 
     // SEND WELCOME MAIL
