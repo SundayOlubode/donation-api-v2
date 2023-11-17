@@ -37,7 +37,8 @@
     "password": "testing",
     "confirmPassword": "testing",
     "firstname": "Testing",
-    "lastname": "Surname"
+    "lastname": "Surname",
+    "phoneNumber": "+234XXXXXXXX"
 }
 ```
 
@@ -53,6 +54,7 @@
             "lastname": "Surname",
             "role": "admin",
             "_id": "6476fb24b108c9f663fd8e3f",
+            "phoneNumber": "+234XXXXXXXX",
             "__v": 0
         },
         "token": "jwt",
@@ -84,6 +86,7 @@
             "email": "testing@gmail.com",
             "firstname": "Testing",
             "lastname": "Surname",
+            "phoneNumber": "+234XXXXXXXX",
             "role": "admin",
             "__v": 0
         },
@@ -138,6 +141,7 @@
             "email": "testing@gmail.com",
             "firstname": "Testing",
             "lastname": "Surname",
+            "phoneNumber": "+234XXXXXXXX",
             "role": "admin",
             "__v": 0,
             "passwordResetExpiry": null,
@@ -204,7 +208,7 @@
                 "_id": "6477a3e3dd19733f43fd2989",
                 "amount": 5000,
                 "date": "2023-06-08T00:00:00.000Z",
-                "userId": "6476fb24b108c9f663fd8e3f",
+                "donorId": "6476fb24b108c9f663fd8e3f",
                 "__v": 0
             }
         ]
@@ -270,7 +274,7 @@
 ```
 {
     "amount": 80000,
-    "userId": "6a5b811f6a0929e04250",
+    "donorId": "6a5b811f6a0929e04250",
     "date": (optional)
 }
 ```
