@@ -1,24 +1,24 @@
-const mailGun = require("mailgun-js")
-const appError = require("../utils/appError")
-require("dotenv").config()
+const mailGun = require("mailgun-js");
+const appError = require("../utils/appError");
+require("dotenv").config();
 
 const mailgunAuth = {
   apiKey: process.env.MAILGUN_API_KEY,
   domain: process.env.MAILGUN_DOMAIN,
-}
+};
 
-const mg = mailGun(mailgunAuth)
+const mg = mailGun(mailgunAuth);
 
 /**
  * Send Email To Users
  */
 class EmailToUsers {
   constructor(user, url, donation = undefined) {
-    this.to = user.email
-    this.firstname = user.firstname
-    this.url = url
-    this.from = `${process.env.EMAIL_SENDER} ${process.env.EMAIL_FROM}`
-    this.amount = donation ? donation.amount : undefined
+    this.to = user.email;
+    this.firstname = user.firstname;
+    this.url = url;
+    this.from = `${process.env.EMAIL_SENDER} ${process.env.EMAIL_FROM}`;
+    this.amount = donation ? donation.amount : undefined;
   }
 
   async send(template, subject) {
@@ -32,14 +32,14 @@ class EmailToUsers {
         url: this.url,
         amount: this.amount,
       }),
-    }
+    };
 
     try {
       if (process.env.NODE_ENV === "production") {
-        await mg.messages().send(data)
+        await mg.messages().send(data);
       }
     } catch (error) {
-      throw new appError(error.message, 500)
+      throw new appError(error.message, 500);
     }
   }
 
@@ -47,7 +47,7 @@ class EmailToUsers {
    * SEND WELCOME MAIL
    */
   async sendWelcome() {
-    await this.send("test-welcome", "Welcome! Luke 6:38")
+    await this.send("test-welcome", "Welcome! Luke 6:38");
   }
 
   /**
@@ -57,7 +57,7 @@ class EmailToUsers {
     await this.send(
       "reset-password",
       "Your password reset link(valid for only 10 minutes)",
-    )
+    );
   }
 
   /**
@@ -67,15 +67,29 @@ class EmailToUsers {
     await this.send(
       "verified-pswd",
       "You have reset your password successfully!",
-    )
+    );
   }
 
   /**
    * NOTIFY DONOR WHEN ADMIN RECORDS DONATION
    */
   async notifyDonor() {
-    await this.send("notify-donor", "Your donation has been recorded!")
+    await this.send("notify-donor", "Thank you for your donation!");
+  }
+
+  /**
+   * SEND MONTHLY REMINDER TO DONORS
+   */
+  async sendMonthlyReminder() {
+    await this.send("reminder", "Your Monthly Donation: A Meaningful Impact");
+  }
+
+  /**
+   * SEND DISBURSEMENT NOTIFICATION TO DONORS
+   */
+  async sendDisbursementNotification() {
+    await this.send("disbursement", "Disbursement Notification");
   }
 }
 
-module.exports = { EmailToUsers }
+module.exports = { EmailToUsers };

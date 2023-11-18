@@ -36,7 +36,7 @@
     "mailtrap": "^3.1.1",
     "mongoose": "^7.1.0",
     "morgan": "^1.10.0",
-    "node-cron": "^3.0.2",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.1",
     "nodemailer-mailgun-transport": "^2.1.5",
     "passport": "^0.6.0",
