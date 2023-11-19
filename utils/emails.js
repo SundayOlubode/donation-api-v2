@@ -13,12 +13,13 @@ const mg = mailGun(mailgunAuth);
  * Send Email To Users
  */
 class EmailToUsers {
-  constructor(user, url, donation = undefined) {
+  constructor(user, url, donation = undefined, breakdown = undefined) {
     this.to = user.email;
     this.firstname = user.firstname;
     this.url = url;
     this.from = `${process.env.EMAIL_SENDER} ${process.env.EMAIL_FROM}`;
     this.amount = donation ? donation.amount : undefined;
+    this.breakdown = breakdown ? breakdown : undefined;
   }
 
   async send(template, subject) {
@@ -30,7 +31,9 @@ class EmailToUsers {
       "h:X-Mailgun-Variables": JSON.stringify({
         firstname: this.firstname,
         url: this.url,
-        amount: this.amount,
+        amount: this.amount | this.breakdown.amount,
+        balance: this.breakdown ? this.breakdown.balance : undefined,
+        disbursed: this.breakdown ? this.breakdown.disbursed : undefined,
       }),
     };
 

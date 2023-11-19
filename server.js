@@ -9,22 +9,27 @@ const { EmailToUsers } = require("./utils/emails");
 
 // UNCAUGHT EXCEPTION
 process.on("uncaughtException", (error, origin) => {
+  logger.error(error);
   logger.error("UNCAUGHT EXCEPTION! 🔥 Shutting Down...");
   logger.error(error.name, error.message);
   process.exit(1);
 });
 
-const Notification = cron.schedule("0 0 26 * * *", async () => {
+/**
+ * SEND MONTHLY REMINDER
+ * 26th of every month
+ */
+const Notification = cron.schedule("0 0 0 26 * *", async () => {
   try {
-    logger.info("CRON JOB STARTED...");
+    logger.info("Notification CRON JOB STARTED...");
     const users = await Users.find();
 
     const url = `${process.env.FRONTEND_URL}`;
 
     for (let user of users) {
-      // console.log(user);
       await new EmailToUsers(user, url).sendMonthlyReminder();
     }
+    logger.info("Notification CRON JOB DONE...");
   } catch (error) {
     logger.error(error);
   }
@@ -36,7 +41,7 @@ const server = app.listen(PORT, () => {
   Notification.start();
 });
 
-//UNHANDLED REJECTION
+// UNHANDLED REJECTION
 process.on("unhandledRejection", (reason) => {
   logger.error("UNHANDLED REJECTION! 🔥 Shutting Down...");
   logger.error({ REASON: reason });
