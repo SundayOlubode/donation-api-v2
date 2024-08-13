@@ -41,7 +41,7 @@
     "nodemailer-mailgun-transport": "^2.1.5",
     "passport": "^0.6.0",
     "passport-google-oauth2": "^0.2.0",
-    "redis": "^4.6.7",
+    "redis": "^4.7.0",
     "util": "^0.12.5",
     "validator": "^13.9.0",
     "whatsapp": "^0.0.5-Alpha",

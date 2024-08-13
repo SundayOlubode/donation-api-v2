@@ -17,7 +17,7 @@ process.on("uncaughtException", (error, origin) => {
 
 /**
  * SEND MONTHLY REMINDER
- * 26th of every month
+ * 26th of every month.
  */
 const Notification = cron.schedule("0 0 0 26 * *", async () => {
   try {

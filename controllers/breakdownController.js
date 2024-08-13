@@ -39,7 +39,7 @@ exports.getBreakdown = async (req, res, next) => {
   }
 };
 
-/* POST DISBURSE
+/** POST DISBURSE
  */
 exports.postDisbursed = async (req, res, next) => {
   try {
